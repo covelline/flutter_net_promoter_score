@@ -4,24 +4,23 @@ import 'package:flutter_net_promoter_score/model/promoter_type.dart';
 
 class NpsFeedbackWidget extends StatefulWidget {
   final String feedbackText;
-  final VoidCallback onClosePressed;
+  final VoidCallback? onClosePressed;
   final VoidCallback onEditScoreButtonPressed;
   final VoidCallback onSendButtonPressed;
-  final PromoterType promoterType;
+  final PromoterType? promoterType;
   final Function(String feedbackText) onFeedbackTextChanged;
   final NpsFeedbackPageTexts texts;
 
   NpsFeedbackWidget({
-    Key key,
-    @required this.texts,
-    this.onEditScoreButtonPressed,
+    Key? key,
+    required this.texts,
+    required this.onEditScoreButtonPressed,
     this.onClosePressed,
-    this.onSendButtonPressed,
-    this.onFeedbackTextChanged,
-    this.feedbackText,
+    required this.onSendButtonPressed,
+    required this.onFeedbackTextChanged,
+    required this.feedbackText,
     this.promoterType,
-  })  : assert(texts != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   NpsFeedbackWidgetState createState() => new NpsFeedbackWidgetState();
@@ -126,9 +125,7 @@ class NpsFeedbackWidgetState extends State<NpsFeedbackWidget> {
                           padding: new EdgeInsets.all(0.0),
                           icon: new Icon(Icons.clear, size: 22.0),
                           onPressed: () {
-                            if (this.widget.onClosePressed != null) {
-                              this.widget.onClosePressed();
-                            }
+                            this.widget.onClosePressed?.call();
                           }),
                     )
                   ],

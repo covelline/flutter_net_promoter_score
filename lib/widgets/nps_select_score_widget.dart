@@ -4,18 +4,18 @@ import 'package:flutter_net_promoter_score/model/nps_survey_texts.dart';
 import 'package:flutter_net_promoter_score/model/promoter_type.dart';
 
 class NpsSelectScoreWidget extends StatefulWidget {
-  final int score;
-  final VoidCallback onClosePressed;
+  final int? score;
+  final VoidCallback? onClosePressed;
   final VoidCallback onSendButtonPressed;
-  final void Function(int score) onScoreChanged;
+  final void Function(int? score) onScoreChanged;
   final NpsSelectScorePageTexts texts;
 
   NpsSelectScoreWidget({
-    Key key,
-    @required this.texts,
-    this.onSendButtonPressed,
+    Key? key,
+    required this.texts,
+    required this.onSendButtonPressed,
     this.onClosePressed,
-    this.onScoreChanged,
+    required this.onScoreChanged,
     this.score,
   }) : super(key: key);
 
@@ -24,7 +24,7 @@ class NpsSelectScoreWidget extends StatefulWidget {
 }
 
 class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
-  int _currentScore;
+  int? _currentScore;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
   }
 
   List<Widget> _numbers() {
-    List<Widget> numbers = List<Widget>();
+    List<Widget> numbers = [];
 
     for (var currentScoreNumber = 0;
         currentScoreNumber <= 10;
@@ -44,13 +44,13 @@ class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
             child: Center(
               child: Text(
                 currentScoreNumber.toString(),
-                style: Theme.of(context).textTheme.caption.copyWith(
+                style: Theme.of(context).textTheme.caption?.copyWith(
                       fontWeight: currentScoreNumber == _currentScore
                           ? FontWeight.bold
                           : FontWeight.normal,
                       color: currentScoreNumber == _currentScore
                           ? Theme.of(context).indicatorColor
-                          : Theme.of(context).textTheme.bodyText1.color,
+                          : Theme.of(context).textTheme.bodyText1?.color,
                     ),
               ),
             ),
@@ -81,9 +81,7 @@ class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
                     padding: new EdgeInsets.all(0.0),
                     icon: new Icon(Icons.close, size: 22.0),
                     onPressed: () {
-                      if (this.widget.onClosePressed != null) {
-                        this.widget.onClosePressed();
-                      }
+                      this.widget.onClosePressed?.call();
                     }),
               )
             ],
@@ -127,12 +125,12 @@ class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
                 child: Container(
                   child: Text(
                     this.widget.texts.detractorScoreLabelText,
-                    style: Theme.of(context).textTheme.caption.copyWith(
+                    style: Theme.of(context).textTheme.caption?.copyWith(
                         fontSize: 12,
                         color: _currentScore.toPromoterType() ==
                                 PromoterType.detractor
                             ? Theme.of(context).indicatorColor
-                            : Theme.of(context).textTheme.caption.color),
+                            : Theme.of(context).textTheme.caption?.color),
                   ),
                   alignment: Alignment.centerLeft,
                 ),
@@ -141,12 +139,12 @@ class NpsSelectScoreWidgetState extends State<NpsSelectScoreWidget> {
                 child: Container(
                   child: Text(
                     this.widget.texts.promoterScoreLabelText,
-                    style: Theme.of(context).textTheme.caption.copyWith(
+                    style: Theme.of(context).textTheme.caption?.copyWith(
                         fontSize: 12,
                         color: _currentScore.toPromoterType() ==
                                 PromoterType.promoter
                             ? Theme.of(context).indicatorColor
-                            : Theme.of(context).textTheme.caption.color),
+                            : Theme.of(context).textTheme.caption?.color),
                   ),
                   alignment: Alignment.centerRight,
                 ),

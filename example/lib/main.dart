@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -41,33 +41,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _showNPS() {
     showNetPromoterScore(
-      context: context,
-      texts: NpsSurveyTexts(
-        selectScorePageTexts: NpsSelectScorePageTexts(
-          surveyQuestionText:
-              "How likely are you to recommend flutter_net_promoter_score to a friend or colleague?",
+        context: context,
+        texts: NpsSurveyTexts(
+          selectScorePageTexts: NpsSelectScorePageTexts(
+            surveyQuestionText:
+                "How likely are you to recommend flutter_net_promoter_score to a friend or colleague?",
+          ),
         ),
-      ),
-      onSurveyCompleted: (result) {
-        print("NPS Completed");
-        print("Score: ${result.score}");
-        print("Feedback: ${result.feedback}");
-        print("Promoter Type: ${result.promoterType}");
-      },
-      onClosePressed: () {
-        print("User closed the survery");
-      },
-      onScoreChanged: (newScore) {
-        print("User changed the score to $newScore");
-      },
-      onFeedbackChanged: (newFeedback) {
-        print("User change the feedback to $newFeedback");
-      },
-      thankYouIcon: Icon(
-        Icons.thumb_up,
-      ),
-      theme: ThemeData.light()
-    );
+        onSurveyCompleted: (result) {
+          print("NPS Completed");
+          print("Score: ${result.score}");
+          print("Feedback: ${result.feedback}");
+          print("Promoter Type: ${result.promoterType}");
+        },
+        onClosePressed: () {
+          print("User closed the survery");
+        },
+        onScoreChanged: (newScore) {
+          print("User changed the score to $newScore");
+        },
+        onFeedbackChanged: (newFeedback) {
+          print("User change the feedback to $newFeedback");
+        },
+        thankYouIcon: Icon(
+          Icons.thumb_up,
+        ),
+        theme: ThemeData.light());
   }
 
   @override

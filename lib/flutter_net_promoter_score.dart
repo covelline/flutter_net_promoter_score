@@ -10,24 +10,24 @@ import 'model/net_promoter_score_result.dart';
 import 'model/nps_survey_page.dart';
 
 /// Show a modal Net Promoter Score as a material design bottom sheet.
-/// 
+///
 /// The `context` argument is used to look up the [Navigator] and [Theme] for
 /// the bottom sheet. It is only used when the method is called. Its
 /// corresponding widget can be safely removed from the tree before the bottom
 /// sheet is closed.
-/// 
+///
 /// Use `onClosePressed` parameter to get callback when the user close the survery using the close button
-/// 
+///
 /// Use `onScoreChanged` parameter to get callback when the user change the score
-/// 
+///
 /// Use `onFeedbackChanged` parameter to get callback when the user change the feedback text field
-/// 
+///
 /// Use `onSurveyCompleted` parameter to get callback when the survery is campleted. This callback will provide [NetPromoterScoreResult] object with the final survery results.
-/// 
+///
 /// Use `texts` parameter to customize the text in the survery using your own texts.
-/// 
+///
 /// Use `theme` parameter to customize the look and feel of the survey. change font and colors using [ThemeData] object
-/// 
+///
 /// Use `thankYouIcon` parameter to provide a your own [Widget] for the Thank You view image
 /// ```dart
 /// showNetPromoterScore(
@@ -59,22 +59,20 @@ import 'model/nps_survey_page.dart';
 ///   theme: ThemeData.dark()
 /// );
 /// ```
-/// 
-Future<T> showNetPromoterScore<T>({
-  @required BuildContext context,
-  ThemeData theme,
-  VoidCallback onClosePressed,
-  Function(int newScore) onScoreChanged,
-  Function(String newFeedback) onFeedbackChanged,
-  Function(NetPromoterScoreResult result) onSurveyCompleted,
+///
+Future<T?> showNetPromoterScore<T>({
+  required BuildContext context,
+  ThemeData? theme,
+  VoidCallback? onClosePressed,
+  Function(int? newScore)? onScoreChanged,
+  Function(String newFeedback)? onFeedbackChanged,
+  Function(NetPromoterScoreResult result)? onSurveyCompleted,
   NpsSurveyTexts texts = const NpsSurveyTexts(),
-  Widget thankYouIcon,
+  Widget? thankYouIcon,
 }) {
-  assert(texts != null);
-
   bool currentlyShowingSurvey = true;
 
-  Future<T> future = showModalBottomSheet(
+  Future<T?> future = showModalBottomSheet(
     backgroundColor: Colors.transparent,
     isDismissible: false,
     isScrollControlled: true,
@@ -122,33 +120,33 @@ Future<T> showNetPromoterScore<T>({
 
 class FlutterNetPromoterScore extends StatefulWidget {
   final NpsSurveyTexts texts;
-  final VoidCallback onClosePressed;
+  final VoidCallback? onClosePressed;
   final void Function(NetPromoterScoreResult result) onSurveyCompleted;
-  final Function(int newScore) onScoreChanged;
-  final Function(String newFeedback) onFeedbackChanged;
-  final ThemeData theme;
-  final Widget thankYouIcon;
+  final Function(int? newScore)? onScoreChanged;
+  final Function(String newFeedback)? onFeedbackChanged;
+  final ThemeData? theme;
+  final Widget? thankYouIcon;
 
   FlutterNetPromoterScore({
-    this.onSurveyCompleted,
+    required this.onSurveyCompleted,
     this.onClosePressed,
     this.onScoreChanged,
     this.onFeedbackChanged,
     this.theme,
     this.texts = const NpsSurveyTexts(),
     this.thankYouIcon,
-  }) : assert(texts != null);
+  });
 
   @override
   FlutterNetPromoterScoreState createState() => FlutterNetPromoterScoreState();
 }
 
 class FlutterNetPromoterScoreState extends State<FlutterNetPromoterScore> {
-  int _currentScore;
+  int? _currentScore;
   String _currentFeedbackText = "";
 
   NpsSurveyPage _currentPage = NpsSurveyPage.score;
-  List<Widget Function()> _pageBuilders = List<Widget Function()>();
+  List<Widget Function()> _pageBuilders = [];
 
   @override
   void initState() {
@@ -182,14 +180,10 @@ class FlutterNetPromoterScoreState extends State<FlutterNetPromoterScore> {
       },
       onFeedbackTextChanged: (String feedbackText) {
         _currentFeedbackText = feedbackText;
-        if (this.widget.onFeedbackChanged != null) {
-          this.widget.onFeedbackChanged(feedbackText);
-        }
+        this.widget.onFeedbackChanged?.call(feedbackText);
       },
       onClosePressed: () {
-        if (this.widget.onClosePressed != null) {
-          this.widget.onClosePressed();
-        }
+        this.widget.onClosePressed?.call();
       },
       feedbackText: _currentFeedbackText,
       texts: this.widget.texts.feedbackPageTexts,
@@ -202,16 +196,12 @@ class FlutterNetPromoterScoreState extends State<FlutterNetPromoterScore> {
       onSendButtonPressed: () {
         setState(() => _currentPage = NpsSurveyPage.feedback);
       },
-      onScoreChanged: (int score) {
+      onScoreChanged: (int? score) {
         _currentScore = score;
-        if (this.widget.onScoreChanged != null) {
-          this.widget.onScoreChanged(score);
-        }
+        this.widget.onScoreChanged?.call(score);
       },
       onClosePressed: () {
-        if (this.widget.onClosePressed != null) {
-          this.widget.onClosePressed();
-        }
+        this.widget.onClosePressed?.call();
       },
       score: _currentScore,
       texts: this.widget.texts.selectScorePageTexts,
@@ -232,7 +222,7 @@ class FlutterNetPromoterScoreState extends State<FlutterNetPromoterScore> {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: this.widget.theme == null ? Theme.of(context) : this.widget.theme,
+      data: this.widget.theme == null ? Theme.of(context) : this.widget.theme!,
       child: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
